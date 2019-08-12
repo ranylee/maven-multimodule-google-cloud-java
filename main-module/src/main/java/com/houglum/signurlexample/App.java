@@ -24,13 +24,7 @@ public class App {
 
     URL signedUrl;
 
-    signedUrl = storageClient.signUrl(
-        blobInfo,
-        1,
-        TimeUnit.HOURS,
-        Storage.SignUrlOption.withVirtualHostName(vhostname),
-        Storage.SignUrlOption.withV4Signature());
-    System.out.printf("Your V4 signed URL is:\n%s\n", signedUrl.toString());
+    System.out.printf("============ Virtual hosted-style URLs:\n\n");
 
     signedUrl = storageClient.signUrl(
         blobInfo,
@@ -38,21 +32,46 @@ public class App {
         TimeUnit.HOURS,
         Storage.SignUrlOption.withVirtualHostName(vhostname),
         Storage.SignUrlOption.withV4Signature());
-    System.out.printf("Your V4 signed URL is:\n%s\n", signedUrl.toString());
+    System.out.printf("Your V4 signed URL is:\n%s\n\n", signedUrl.toString());
+
+    signedUrl = storageClient.signUrl(
+        blobInfo,
+        1,
+        TimeUnit.HOURS,
+        Storage.SignUrlOption.withVirtualHostName(vhostname),
+        Storage.SignUrlOption.withV2Signature());
+    System.out.printf("Your V2 signed URL is:\n%s\n\n", signedUrl.toString());
+
+    System.out.printf("============ Making sure other path-style host still works...\n\n");
+
+    signedUrl = storageClient.signUrl(
+        blobInfo,
+        1,
+        TimeUnit.HOURS,
+        Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
+        Storage.SignUrlOption.withV4Signature());
+    System.out.printf("Your V4 signed URL is:\n%s\n\n", signedUrl.toString());
+
+    signedUrl = storageClient.signUrl(
+        blobInfo,
+        1,
+        TimeUnit.HOURS,
+        Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
+        Storage.SignUrlOption.withV4Signature());
+
+    signedUrl = storageClient.signUrl(
+        blobInfo,
+        1,
+        TimeUnit.HOURS,
+        Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
+        Storage.SignUrlOption.withV2Signature());
+    System.out.printf("Your V2 signed URL is:\n%s\n\n", signedUrl.toString());
 
     signedUrl = storageClient.signUrl(
         blobInfo,
         1,
         TimeUnit.HOURS,
         Storage.SignUrlOption.withV2Signature());
-    System.out.printf("Your V2 signed URL is:\n%s\n", signedUrl.toString());
-
-    signedUrl = storageClient.signUrl(
-        blobInfo,
-        1,
-        TimeUnit.HOURS,
-        Storage.SignUrlOption.withV2Signature(),
-        Storage.SignUrlOption.withHostName("https://storage.googleapis.com"));
-    System.out.printf("Your V2 signed URL is:\n%s\n", signedUrl.toString());
+    System.out.printf("Your V2 signed URL is:\n%s\n\n", signedUrl.toString());
   }
 }
