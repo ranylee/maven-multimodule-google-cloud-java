@@ -32,12 +32,15 @@ public class MainModule {
     BlobId blobIdForPut = BlobId.of(bucketName, objectNameForPut);
     BlobInfo blobInfoForPut =
         BlobInfo.newBuilder(blobIdForPut).setContentType("text/plain").build();
+    BlobId blobIdForList = BlobId.of(bucketName, "");
+    BlobInfo blobInfoForList =
+        BlobInfo.newBuilder(blobIdForList).build();
 
     ArrayList<URL> urls;
 
     System.out.printf("\n============ Virtual hosted-style URLs:\n");
 
-    // Method: GET
+    // Method: GET (object)
     urls = new ArrayList<URL>();
     // V4 with virtual hostname
     urls.add(storageClient.signUrl(
@@ -53,12 +56,32 @@ public class MainModule {
         Storage.SignUrlOption.withVirtualHostName(vhostname),
         Storage.SignUrlOption.withV2Signature()));
 
-    System.out.printf("\n[GET]\n");
+    System.out.printf("\n[GET] to fetch object bytes\n");
     for (URL signedUrl : urls) {
       System.out.printf("\n%s\n", signedUrl.toString());
     }
 
-    // Method: PUT
+    // Method: GET (list objects in a bucket)
+    urls = new ArrayList<URL>();
+    // V4 with virtual hostname
+    urls.add(storageClient.signUrl(
+        blobInfoForList,
+        1, TimeUnit.HOURS,
+        Storage.SignUrlOption.withVirtualHostName(vhostname),
+        Storage.SignUrlOption.withV4Signature()));
+    // V2 with virtual hostname
+    urls.add(storageClient.signUrl(
+        blobInfoForList,
+        1, TimeUnit.HOURS,
+        Storage.SignUrlOption.withVirtualHostName(vhostname),
+        Storage.SignUrlOption.withV2Signature()));
+
+    System.out.printf("\n[GET] to list objects in a bucket\n");
+    for (URL signedUrl : urls) {
+      System.out.printf("\n%s\n", signedUrl.toString());
+    }
+
+    // Method: PUT (object)
     urls = new ArrayList<URL>();
     // V4 with virtual hostname
     urls.add(storageClient.signUrl(
@@ -76,7 +99,7 @@ public class MainModule {
         Storage.SignUrlOption.withVirtualHostName(vhostname),
         Storage.SignUrlOption.withV2Signature()));
 
-    System.out.printf("\n[PUT]\n");
+    System.out.printf("\n[PUT] to upload object bytes\n");
     for (URL signedUrl : urls) {
       // Note: curl adds a content-type, and the server will complain for v2-signed URLs if the
       // provided content-type doesn't match what was used at signing time.
@@ -85,6 +108,7 @@ public class MainModule {
                         signedUrl.toString());
     }
     System.out.printf("\n===================================================\n");
+
 
     ///////////////////////////////////////////////////////////////
     // Sanity check to make sure other path style still works; used for testing. Adding quick return
@@ -96,7 +120,7 @@ public class MainModule {
     ///////////////////////////////////////////////////////////////
     System.out.printf("\n============ Making sure other path-style host still works...\n");
 
-    // Method: GET
+    // Method: GET (object)
     urls = new ArrayList<URL>();
     // V4 with overridden hostname
     urls.add(storageClient.signUrl(
@@ -122,13 +146,44 @@ public class MainModule {
         1, TimeUnit.HOURS,
         Storage.SignUrlOption.withV2Signature()));
 
-    System.out.printf("\n[GET]\n");
+    System.out.printf("\n[GET] to fetch object bytes\n");
     for (URL signedUrl : urls) {
       System.out.printf("\n%s\n", signedUrl.toString());
     }
     System.out.printf("\n===================================================\n");
 
-    // Method: PUT
+    // Method: GET (list objects in a bucket)
+    urls = new ArrayList<URL>();
+    // V4 with overridden hostname
+    urls.add(storageClient.signUrl(
+        blobInfoForList,
+        1, TimeUnit.HOURS,
+        Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
+        Storage.SignUrlOption.withV4Signature()));
+    // V4 with standard hostname
+    urls.add(storageClient.signUrl(
+        blobInfoForList,
+        1, TimeUnit.HOURS,
+        Storage.SignUrlOption.withV4Signature()));
+    // V2 with overridden hostname
+    urls.add(storageClient.signUrl(
+        blobInfoForList,
+        1, TimeUnit.HOURS,
+        Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
+        Storage.SignUrlOption.withV2Signature()));
+    // V2 with standard hostname
+    urls.add(storageClient.signUrl(
+        blobInfoForList,
+        1, TimeUnit.HOURS,
+        Storage.SignUrlOption.withV2Signature()));
+
+    System.out.printf("\n[GET] to list objects in a bucket\n");
+    for (URL signedUrl : urls) {
+      System.out.printf("\n%s\n", signedUrl.toString());
+    }
+    System.out.printf("\n===================================================\n");
+
+    // Method: PUT (object)
     urls = new ArrayList<URL>();
     // V4 with overridden hostname
     urls.add(storageClient.signUrl(
@@ -158,7 +213,7 @@ public class MainModule {
         Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
         Storage.SignUrlOption.withV2Signature()));
 
-    System.out.printf("\n[PUT]\n");
+    System.out.printf("\n[PUT] to upload object bytes\n");
     for (URL signedUrl : urls) {
       // Note: curl adds a content-type, and the server will complain for v2-signed URLs if the
       // provided content-type doesn't match what was used at signing time.
