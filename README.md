@@ -24,8 +24,8 @@ role that grants the `iam.serviceAccounts.signBlob` permission.
 
 ```
 BKT_NAME="your-bucket-name-here"
-GET_OBJ_NAME="your-object-name-here"
-PUT_OBJ_NAME="another-object-name-here"
+GET_OBJ_NAME="name-of-an-object-in-your-bucket-that-already-exists"
+PUT_OBJ_NAME="name-of-an-object-you-want-to-create"
 
 mvn install -DskipTests && \
 mvn exec:java --projects main-module \
@@ -39,4 +39,10 @@ mvn exec:java --projects main-module \
 mvn install --projects main-module -DskipTests && \
 mvn exec:java --projects main-module \
     -Dexec.args="${BKT_NAME:?must be set} ${GET_OBJ_NAME:?must be set} ${PUT_OBJ_NAME:?must be set}"
+
+# Similarly, if you edit both the google-cloud-storage and main-module projects,
+# you can specify that the `install` step should only rebuild those:
+mvn install \
+    --projects main-module,google-cloud-java/google-cloud-clients/google-cloud-storage \
+    -DskipTests
 ```
