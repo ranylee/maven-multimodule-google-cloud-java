@@ -40,16 +40,24 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForGet,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withVirtualHostName(vhostname),
             Storage.SignUrlOption.withV4Signature()));
-    // V2 with virtual hostname
+    // Same thing, but not supplying the hostname explicitly
     urls.add(
         storageClient.signUrl(
             blobInfoForGet,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
+            Storage.SignUrlOption.withVirtualHostName(),
+            Storage.SignUrlOption.withV4Signature()));
+     // V2 with virtual hostname
+    urls.add(
+        storageClient.signUrl(
+            blobInfoForGet,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withVirtualHostName(vhostname),
             Storage.SignUrlOption.withV2Signature()));
 
@@ -68,8 +76,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForList,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withV4Signature(),
             Storage.SignUrlOption.withCanonicalQueryParam("versions", "True"),
             Storage.SignUrlOption.withCanonicalQueryParam("prefix", prefix),
@@ -78,16 +86,16 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForList,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withVirtualHostName(vhostname),
             Storage.SignUrlOption.withV4Signature()));
     // V2 with virtual hostname
     urls.add(
         storageClient.signUrl(
             blobInfoForList,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withVirtualHostName(vhostname),
             Storage.SignUrlOption.withV2Signature()));
 
@@ -102,8 +110,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForPut,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withVirtualHostName(vhostname),
             Storage.SignUrlOption.withV4Signature()));
@@ -111,8 +119,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForPut,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withVirtualHostName(vhostname),
             Storage.SignUrlOption.withV2Signature()));
@@ -143,30 +151,33 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForGet,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV4Signature()));
     // V4 without overridden hostname
     urls.add(
         storageClient.signUrl(
             blobInfoForGet,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV4Signature()));
     // V2 with overridden hostname
     urls.add(
         storageClient.signUrl(
             blobInfoForGet,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV2Signature()));
     // V2 without overridden hostname
     urls.add(
         storageClient.signUrl(
-            blobInfoForGet, 1, TimeUnit.HOURS, Storage.SignUrlOption.withV2Signature()));
+            blobInfoForGet,
+            6,
+            TimeUnit.DAYS,
+            Storage.SignUrlOption.withV2Signature()));
 
     System.out.printf("\n[GET] to fetch object bytes\n");
     for (URL signedUrl : urls) {
@@ -180,26 +191,32 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForList,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV4Signature()));
     // V4 with standard hostname
     urls.add(
         storageClient.signUrl(
-            blobInfoForList, 1, TimeUnit.HOURS, Storage.SignUrlOption.withV4Signature()));
+            blobInfoForList,
+            6,
+            TimeUnit.DAYS,
+            Storage.SignUrlOption.withV4Signature()));
     // V2 with overridden hostname
     urls.add(
         storageClient.signUrl(
             blobInfoForList,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV2Signature()));
     // V2 with standard hostname
     urls.add(
         storageClient.signUrl(
-            blobInfoForList, 1, TimeUnit.HOURS, Storage.SignUrlOption.withV2Signature()));
+            blobInfoForList,
+            6,
+            TimeUnit.DAYS,
+            Storage.SignUrlOption.withV2Signature()));
 
     System.out.printf("\n[GET] to list objects in a bucket\n");
     for (URL signedUrl : urls) {
@@ -213,8 +230,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForPut,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV4Signature()));
@@ -222,8 +239,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForPut,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV4Signature()));
@@ -231,8 +248,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForPut,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
             Storage.SignUrlOption.withV2Signature()));
@@ -240,8 +257,8 @@ public class MainModule {
     urls.add(
         storageClient.signUrl(
             blobInfoForPut,
-            1,
-            TimeUnit.HOURS,
+            6,
+            TimeUnit.DAYS,
             Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withV2Signature()));
 
