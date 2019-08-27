@@ -79,8 +79,10 @@ public class MainModule {
             6,
             TimeUnit.DAYS,
             Storage.SignUrlOption.withV4Signature(),
-            Storage.SignUrlOption.withCanonicalQueryParam("versions", "True"),
-            Storage.SignUrlOption.withCanonicalQueryParam("prefix", prefix),
+            // TODO: Add these back in once we pull in a branch of the google-cloud-java fork that
+            // that contains this new method.
+            // Storage.SignUrlOption.withCanonicalQueryParam("versions", "True"),
+            // Storage.SignUrlOption.withCanonicalQueryParam("prefix", prefix),
             Storage.SignUrlOption.withVirtualHostName(vhostname)));
     // V4 with virtual hostname
     urls.add(
