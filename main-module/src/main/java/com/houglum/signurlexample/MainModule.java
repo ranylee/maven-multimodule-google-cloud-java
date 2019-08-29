@@ -183,9 +183,10 @@ public class MainModule {
 
     urls.add(
         storageClient.signUrl(
-            blobInfoForGet,
+            blobInfoForPut,
             6,
             TimeUnit.DAYS,
+            Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
             Storage.SignUrlOption.withContentType(),
             Storage.SignUrlOption.withV2Signature()));
 
