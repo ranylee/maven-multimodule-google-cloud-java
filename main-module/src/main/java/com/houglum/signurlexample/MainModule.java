@@ -155,7 +155,6 @@ public class MainModule {
             blobInfoForGet,
             6,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.withHostName("example.amazonaws.com"),
             Storage.SignUrlOption.withV4Signature()));
     // V4 without overridden hostname
     // urls.add(
