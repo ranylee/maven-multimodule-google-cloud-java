@@ -150,20 +150,20 @@ public class MainModule {
     // Method: GET (object)
     urls = new ArrayList<URL>();
     // V4 with overridden hostname
+    urls.add(
+        storageClient.signUrl(
+            blobInfoForGet,
+            6,
+            TimeUnit.DAYS,
+            Storage.SignUrlOption.withHostName("example.amazonaws.com"),
+            Storage.SignUrlOption.withV4Signature()));
+    // V4 without overridden hostname
     // urls.add(
     //     storageClient.signUrl(
     //         blobInfoForGet,
     //         6,
     //         TimeUnit.DAYS,
-    //         Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
-    //         Storage.SignUrlOption.withV4Signature()));
-    // // V4 without overridden hostname
-    // urls.add(
-    //     storageClient.signUrl(
-    //         blobInfoForGet,
-    //         6,
-    //         TimeUnit.DAYS,
-    //         Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
+    //         Storage.SignUrlOption.withHostName("example.amazonaws.com"),
     //         Storage.SignUrlOption.withV4Signature()));
     // // V2 with overridden hostname
     // urls.add(
@@ -174,21 +174,21 @@ public class MainModule {
     //         Storage.SignUrlOption.withHostName("https://storage.googleapis.com"),
     //         Storage.SignUrlOption.withV2Signature()));
     // V2 without overridden hostname
-    urls.add(
-        storageClient.signUrl(
-            blobInfoForGet,
-            6,
-            TimeUnit.DAYS,
-            Storage.SignUrlOption.withV2Signature()));
-
-    urls.add(
-        storageClient.signUrl(
-            blobInfoForPut,
-            6,
-            TimeUnit.DAYS,
-            Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
-            Storage.SignUrlOption.withContentType(),
-            Storage.SignUrlOption.withV2Signature()));
+    // urls.add(
+    //     storageClient.signUrl(
+    //         blobInfoForGet,
+    //         6,
+    //         TimeUnit.DAYS,
+    //         Storage.SignUrlOption.withV2Signature()));
+    //
+    // urls.add(
+    //     storageClient.signUrl(
+    //         blobInfoForPut,
+    //         6,
+    //         TimeUnit.DAYS,
+    //         Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
+    //         Storage.SignUrlOption.withContentType(),
+    //         Storage.SignUrlOption.withV2Signature()));
 
     System.out.printf("\n[GET] to fetch object bytes\n");
     for (URL signedUrl : urls) {
