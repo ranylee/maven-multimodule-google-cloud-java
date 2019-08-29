@@ -23,10 +23,10 @@ public class MainModule {
 
     BlobId blobIdForGet = BlobId.of(bucketName, objectNameForGet);
     BlobInfo blobInfoForGet =
-        BlobInfo.newBuilder(blobIdForGet).setContentType("text/plain").build();
+        BlobInfo.newBuilder(blobIdForGet).setContentType("image/jpeg").build();
     BlobId blobIdForPut = BlobId.of(bucketName, objectNameForPut);
     BlobInfo blobInfoForPut =
-        BlobInfo.newBuilder(blobIdForPut).setContentType("text/plain").build();
+        BlobInfo.newBuilder(blobIdForPut).setContentType("image/jpeg").build();
     BlobId blobIdForList = BlobId.of(bucketName, "");
     BlobInfo blobInfoForList = BlobInfo.newBuilder(blobIdForList).build();
 
@@ -179,6 +179,14 @@ public class MainModule {
             blobInfoForGet,
             6,
             TimeUnit.DAYS,
+            Storage.SignUrlOption.withV2Signature()));
+
+    urls.add(
+        storageClient.signUrl(
+            blobInfoForGet,
+            6,
+            TimeUnit.DAYS,
+            Storage.SignUrlOption.withContentType(),
             Storage.SignUrlOption.withV2Signature()));
 
     System.out.printf("\n[GET] to fetch object bytes\n");
